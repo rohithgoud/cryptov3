@@ -19,7 +19,7 @@ const Navbar = () => {
     ];
 
     return (
-        <nav className="fixed top-0 left-0 z-20 w-full bg-white border-b border-gray-200 dark:bg-gray-900 dark:border-gray-600">
+        <nav className="fixed top-0 left-0 z-20 w-full bg-white border-b border-gray-200 ">
             <div className="flex flex-wrap items-center justify-between max-w-screen-xl p-4 mx-auto">
                 <Link to="/" className="flex items-center">
                     <span className="self-center text-3xl font-bold text-emerald-500 whitespace-nowrap">CoinX</span>

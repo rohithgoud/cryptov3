@@ -2,21 +2,17 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = 'cryptoapp'
-        DOCKER_TAG = 'v3'
-        DOCKER_REGISTRY = 'rohithblogbox' // Replace with your registry
-    }
-
-    tools {
-        nodejs 'nodejs-20'
+        DOCKER_IMAGE = 'rohithblogbox/cryptov3' // Replace with your registry
+        DOCKER_REGISTRY = 'index.docker.io/v1/'
     }
 
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/rohithgoud/cryptoapp-v2.git'
+             git branch: 'main', credentialsId: 'gitcred', url: 'https://github.com/rohithgoud/cryptov3.git'
             }
         }
+        
 
         stage('Install Dependencies') {
             steps {
@@ -24,42 +20,30 @@ pipeline {
             }
         }
 
-        stage('Run Tests') {
-            steps {
-                sh 'npm test -- --watchAll=false'
-            }
-        }
-
         stage('Build Docker Image') {
             steps {
                 script {
-                    docker.build("${DOCKER_IMAGE}:${DOCKER_TAG}")
+                    docker.build("${DOCKER_IMAGE}:${BUILD_NUMBER}")
                 }
             }
         }
 
         stage('Push Docker Image') {
-            when {
-                branch 'main' // Only push when on main branch
-            }
             steps {
                 script {
-                    docker.withRegistry("https://${DOCKER_REGISTRY}", 'docker-credentials-id') {
-                        docker.image("${DOCKER_IMAGE}:${DOCKER_TAG}").push()
+                    docker.withRegistry("https://${DOCKER_REGISTRY}", 'dockercred') {
+                        docker.image("${DOCKER_IMAGE}:${BUILD_NUMBER}").push()
                     }
                 }
             }
         }
 
         stage('Deploy') {
-            when {
-                branch 'main' // Only deploy when on main branch
-            }
             steps {
                 echo 'Deploying the application...'
                 // Add your deployment steps here
                 // For example: kubectl apply, docker-compose up, etc.
-                sh 'docker run -d -p 80:80 cryptoapp'
+                sh 'docker run -d -p 80:80 ${DOCKER_IMAGE}:${BUILD_NUMBER}'
             }
         }
     }
