@@ -35,7 +35,7 @@ const Navbar = () => {
                     {toggle ? <FaTimes size={20} /> : <FaBars size={20} />}
                 </button>
                 <div className="hidden w-full md:block md:w-auto" id="navbar-default">
-                    <ul className="flex flex-col items-center p-4 mt-4 font-medium border border-gray-100 rounded-lg md:p-0 bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+                    <ul className="flex flex-col items-center p-4 mt-4 font-medium border border-gray-100 rounded-lg md:p-0 bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white ">
                         {navLinks.map(item => (
                             <li key={item.to}>
                                 <Link to={item.to} className="block py-2 pl-3 pr-4 rounded hover:text-emerald-500 md:p-0">{item.text}</Link>
